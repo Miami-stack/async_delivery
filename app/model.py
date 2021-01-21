@@ -10,18 +10,12 @@ metadata = Base.metadata
 class Goods(Base):
     __tablename__ = "goods"
 
-    id = Column(
-        Integer,
-        Sequence('goods_id_seq'),
+    identificator = Column(
+        String,
         primary_key=True,
         comment="Идентификатор.",
     )
 
-    identificator = Column(
-        String,
-        nullable=False,
-        comment="идентификатор товара"
-    )
     status = Column(
         String,
         nullable=False,

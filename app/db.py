@@ -1,25 +1,12 @@
 from typing import Dict
 import sqlalchemy as sa
 from app.model import Goods
-import jsonschema
-from app.schema import SCHEMA
-
-
-def json_validation(input_json: Dict, schema: Dict = SCHEMA) -> [bool, Dict]:
-    """Функция для валидации json."""
-    try:
-        jsonschema.validate(input_json, schema)
-        return input_json
-    except jsonschema.exceptions.ValidationError:
-        print("Невалидный json")
-        return False
 
 
 async def create_table1(eng):
     await eng.execute('DROP TABLE IF EXISTS goods')
     await eng.execute('''CREATE TABLE goods (
-    id serial PRIMARY KEY,
-    identificator text,
+    identificator serial PRIMARY KEY,
     status text''')
 
 
