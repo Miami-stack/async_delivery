@@ -6,16 +6,6 @@ from app import db
 from app.schema import SCHEMA
 
 
-# def json_validation(input_json: Dict, schema: Dict = SCHEMA) -> [bool, Dict]:
-#     """Функция для валидации json."""
-#     try:
-#         jsonschema.validate(input_json, schema)
-#         return input_json
-#     except jsonschema.exceptions.ValidationError:
-#         print("Невалидный json")
-#         return False
-
-
 class HealthView(View):
     """Вью, созданное лишь для возможности проверить жив ли сервис."""
 
@@ -33,15 +23,6 @@ class CheckStatus(View):
 
 class CreateGoods(View):
 
-    # def json_validation(self: Dict, schema: Dict = SCHEMA) -> [bool, Dict]:
-    # """Функция для валидации json."""
-    #     try:
-    #         jsonschema.validate(input_json, schema)
-    #         return self
-    #     except jsonschema.exceptions.ValidationError:
-    #         print("Невалидный json")
-    #         return False
-
     async def post(self):
         data = await self.request.json()
         jsonschema.validate(data, schema=SCHEMA)
@@ -49,4 +30,16 @@ class CreateGoods(View):
         psq_db_post = await db.insert_data(data, engine)
         print(psq_db_post)
         print(type(psq_db_post))
-        return Response(status=200, body=json.dumps(psq_db_post))
+        return Response(status=200, body=json.dumps(data))
+
+
+class UpdateGoods(View):
+
+    async def post(self):
+        data = await self.request.json()
+        jsonschema.validate(data, schema=SCHEMA)
+        engine = self.request.app["engine"]
+        psq_db_post = await db.update_data(data, engine)
+        print(psq_db_post)
+        print(type(psq_db_post))
+        return Response(status=200, body=json.dumps(data))

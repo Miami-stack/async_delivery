@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, create_engine, Sequence
+from sqlalchemy import Column, Integer, String, create_engine, Sequence, VARCHAR
 from sqlalchemy.ext.declarative import declarative_base
 import config
 
@@ -11,15 +11,16 @@ class Goods(Base):
     __tablename__ = "goods"
 
     identificator = Column(
-        String,
+        VARCHAR,
+        Sequence('goods_id_seq'),
+        nullable=False,
         primary_key=True,
         comment="Идентификатор.",
     )
 
     status = Column(
-        String,
+        VARCHAR,
         nullable=False,
-        unique=True,
         comment="статус доставки"
     )
 

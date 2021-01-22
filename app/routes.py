@@ -1,6 +1,6 @@
 from aiohttp import web
 
-from app.views import HealthView, CheckStatus, CreateGoods
+from app.views import HealthView, CheckStatus, CreateGoods, UpdateGoods
 
 
 def inject_routes(app: web.Application) -> None:
@@ -9,6 +9,7 @@ def inject_routes(app: web.Application) -> None:
         [
             web.view("/heartbeat", HealthView),
             web.view("/checkstatus", CheckStatus),
-            web.view("/creategoods", CreateGoods)
+            web.view("/creategoods", CreateGoods),
+            web.view("/updategoods", CreateGoods)
         ]
     )
