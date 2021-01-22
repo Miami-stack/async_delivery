@@ -1,12 +1,15 @@
 from typing import Dict
 import sqlalchemy as sa
+from sqlalchemy.sql import ClauseElement
+
 from app.model import Goods
 
 
 async def create_table1(eng):
     await eng.execute('DROP TABLE IF EXISTS goods')
     await eng.execute('''CREATE TABLE goods (
-    identificator serial PRIMARY KEY,
+    id serial PRIMARY KEY,
+    identificator String,
     status String''')
 
 
@@ -40,8 +43,10 @@ async def update_data(json_object: Dict, eng):
         engine -- объект пула подключений к базе.
     """
     table_class = Goods
-    query_update = sa.update(table_class)
-    query_update = query_update.values(json_object['status'])
+    query_update = sa.insert(table_class)
+    query_update = query_update.values(**json_object)
+    query_update = query_update.on_conflict_do_update(constraint="goods_identificator_key",
+                                                      set_={**json_object})
     async with eng.acquire() as conn:
         transaction = await conn.begin()
         try:
